@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f7ef">
+
+    <title>{% block title %}FoodLens — Understand your food{% endblock %}</title>
+
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', v=5) }}">
+
+    <!-- JavaScript -->
+    <script defer src="{{ url_for('static', filename='js/main.js') }}"></script>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <a class="brand" href="{{ url_for('home') }}">
+            <span class="brand-mark">✳</span>
+            <span>
+                FoodLens
+                <small>Know what goes in</small>
+            </span>
+        </a>
+
+        <button
+            class="nav-toggle"
+            type="button"
+            aria-label="Toggle navigation"
+            aria-expanded="false"
+        >
+            ☰
+        </button>
+
+        <nav class="nav-links">
+            {% if session.get('user_id') %}
+                <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                <a href="{{ url_for('upload') }}">Scan label</a>
+                <a href="{{ url_for('manual_entry') }}">Manual entry</a>
+                <a href="{{ url_for('history') }}">History</a>
+                <a href="{{ url_for('compare_products') }}">Compare Products</a>
+                <a class="nav-cta" href="{{ url_for('logout') }}">Log out</a>
+            {% else %}
+                <a href="{{ url_for('home') }}#how-it-works">How it works</a>
+                <a href="{{ url_for('login') }}">Log in</a>
+                <a class="nav-cta" href="{{ url_for('register') }}">Get started ↗</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flash-wrap">
+                {% for message in messages %}
+                    <div class="flash">
+                        <span>{{ message }}</span>
+                        <button
+                            type="button"
+                            class="flash-close"
+                            aria-label="Dismiss"
+                        >×</button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <a class="brand brand--footer" href="{{ url_for('home') }}">
+            <span class="brand-mark">✳</span>
+            <span>
+                FoodLens
+                <small>Smarter label reading</small>
+            </span>
+        </a>
+
+        <p>Understand ingredients. Make informed choices.</p>
+
+        <span class="footer-note">
+            AI insights are informational and are not medical advice.
+        </span>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,277 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+    FoodLens — Your food, decoded
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero">
+
+    <div class="hero-copy">
+
+        <span class="eyebrow">
+            <span class="eyebrow-dot"></span>
+            YOUR EVERYDAY FOOD COMPANION
+        </span>
+
+        <h1>
+            Know what's<br>
+            in your <em>food.</em>
+        </h1>
+
+        <p class="hero-lede">
+            Turn a confusing ingredients label into clear, useful information.
+            Scan a photo, explore the ingredients, and make choices that feel
+            right for you.
+        </p>
+
+        <div class="hero-actions">
+
+            <a class="btn btn-primary" href="{{ url_for('register') }}">
+                Start your first scan <span>↗</span>
+            </a>
+
+            <a class="text-link" href="#how-it-works">
+                See how it works ↓
+            </a>
+
+        </div>
+
+        <div class="trust-line">
+            <span class="trust-avatars">✓</span>
+            OCR-powered · AI-assisted · Easy to understand
+        </div>
+
+    </div>
+
+    <!-- Food Label Illustration -->
+    <div class="hero-visual">
+
+        <div class="visual-orbit orbit-one"></div>
+        <div class="visual-orbit orbit-two"></div>
+
+        <div class="food-card">
+
+            <div class="food-card-top">
+                <span class="mini-label">FOODLENS / SAMPLE</span>
+                <span class="status-pill">● DEMO</span>
+            </div>
+
+            <div class="jar-illustration">
+
+                <div class="jar-lid"></div>
+
+                <div class="jar-body">
+
+                    <span class="jar-leaf">✳</span>
+
+                    <strong>
+                        GARDEN<br>
+                        FRESH
+                    </strong>
+
+                    <small>Tomato sauce</small>
+
+                    <span class="jar-stamp">
+                        100%<br>
+                        FLAVOUR
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="scan-line"></div>
+
+            <div class="sample-result">
+
+                <div>
+                    <span class="tiny-label">
+                        SAMPLE HEALTH SCORE
+                    </span>
+
+                    <strong>78<span>/100</span></strong>
+                </div>
+
+                <span class="sample-tag">Illustrative</span>
+
+            </div>
+
+            <div class="ingredient-preview">
+                <span>✓ Tomato</span>
+                <span>✓ Olive oil</span>
+                <span>! Salt</span>
+            </div>
+
+        </div>
+
+        <!-- Floating Notes -->
+        <div class="float-note float-note--top">
+            <span>✦</span> Ingredient insights
+        </div>
+
+        <div class="float-note float-note--bottom">
+            <span>◎</span> Made easy to understand
+        </div>
+
+    </div>
+
+</section>
+
+<!-- Feature Strip -->
+<section class="feature-strip">
+
+    <div>
+        <strong>01</strong>
+        <span>Read the label with OCR</span>
+    </div>
+
+    <div>
+        <strong>02</strong>
+        <span>Understand ingredients with AI</span>
+    </div>
+
+    <div>
+        <strong>03</strong>
+        <span>Keep your scans in one place</span>
+    </div>
+
+</section>
+
+<!-- How It Works -->
+<section class="section how-section" id="how-it-works">
+
+    <div class="section-heading">
+
+        <span class="eyebrow">A SIMPLE PROCESS</span>
+
+        <h2>
+            From label to <em>clarity.</em>
+        </h2>
+
+        <p>
+            Three simple steps to help you understand the small print
+            on your food.
+        </p>
+
+    </div>
+
+    <div class="steps-grid">
+
+        <!-- Step 1 -->
+        <article class="step-card">
+
+            <span class="step-icon">↥</span>
+            <span class="step-num">STEP 01</span>
+
+            <h3>Upload a label</h3>
+
+            <p>
+                Choose a clear photo of the ingredients list or type
+                the ingredients yourself.
+            </p>
+
+        </article>
+
+        <!-- Step 2 -->
+        <article class="step-card">
+
+            <span class="step-icon">✳</span>
+            <span class="step-num">STEP 02</span>
+
+            <h3>Let AI explain</h3>
+
+            <p>
+                OCR reads the label, then AI organizes ingredient
+                information into a clear summary.
+            </p>
+
+        </article>
+
+        <!-- Step 3 -->
+        <article class="step-card">
+
+            <span class="step-icon">♡</span>
+            <span class="step-num">STEP 03</span>
+
+            <h3>Choose with confidence</h3>
+
+            <p>
+                Review potential concerns, allergens and practical
+                alternatives before deciding.
+            </p>
+
+        </article>
+
+    </div>
+
+</section>
+
+<!-- Ingredient Information Categories -->
+<section class="body-section">
+
+    <div>
+
+        <span class="eyebrow">MORE THAN A LIST</span>
+
+        <h2>
+            See the bigger<br>
+            <em>picture.</em>
+        </h2>
+
+        <p>
+            Explore ingredient information grouped into simple themes,
+            so the result is easier to scan and understand.
+        </p>
+
+        <a class="text-link" href="{{ url_for('register') }}">
+            Explore FoodLens ↗
+        </a>
+
+    </div>
+
+    <div class="system-cloud">
+
+        <span>❤️ Heart health</span>
+        <span>◉ Blood sugar</span>
+        <span>✦ Ingredient purpose</span>
+        <span>♡ Allergens</span>
+        <span>⌁ Digestion</span>
+        <span>＋ Nutritional context</span>
+        <span>◌ Additives</span>
+        <span>↗ Alternatives</span>
+
+    </div>
+
+</section>
+
+<!-- Call to Action -->
+<section class="cta-section">
+
+    <div>
+
+        <span class="eyebrow">
+            YOUR NEXT LABEL, MADE CLEARER
+        </span>
+
+        <h2>
+            Curious about what's<br>
+            in your food?
+        </h2>
+
+        <p>
+            Start with one label. The rest is easy.
+        </p>
+
+    </div>
+
+    <a class="btn btn-light" href="{{ url_for('register') }}">
+        Create your free account ↗
+    </a>
+
+</section>
+
+{% endblock %}

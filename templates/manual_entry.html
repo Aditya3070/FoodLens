@@ -1,0 +1,123 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+    Manual entry — FoodLens
+{% endblock %}
+
+{% block content %}
+
+<section class="app-page narrow-page">
+
+    <!-- Page Introduction -->
+    <div class="page-intro">
+
+        <div>
+            <span class="eyebrow">TEXT-BASED ANALYSIS</span>
+
+            <h1>Paste the ingredients.</h1>
+
+            <p>
+                No photo needed. Enter the list exactly as it appears
+                on the packaging.
+            </p>
+        </div>
+
+        <a class="back-link" href="{{ url_for('dashboard') }}">
+            ← Dashboard
+        </a>
+
+    </div>
+
+    <!-- Manual Entry Panel -->
+    <div class="panel upload-panel">
+
+        <div class="panel-heading">
+
+            <div>
+                <span class="eyebrow">STEP 01 / INGREDIENTS</span>
+                <h2>Product details</h2>
+            </div>
+
+            <span class="step-badge">Manual input</span>
+
+        </div>
+
+        <!-- Ingredients Form -->
+        <form
+            method="POST"
+            action="{{ url_for('manual_entry') }}"
+            class="form-stack"
+            id="manual-form"
+        >
+
+            <!-- Product Name -->
+            <label>
+                Product name
+                <span class="optional">(optional)</span>
+
+                <input
+                    type="text"
+                    name="product_name"
+                    maxlength="150"
+                    placeholder="e.g. Yellow tomato pasta sauce"
+                >
+            </label>
+
+            <!-- Ingredients List -->
+            <label>
+                Ingredients list
+
+                <textarea
+                    name="ingredients"
+                    id="ingredients-input"
+                    rows="7"
+                    minlength="3"
+                    required
+                    placeholder="e.g. tomatoes (83%), tomato juice, extra virgin olive oil, onion, basil, salt"
+                ></textarea>
+            </label>
+
+            <!-- Character Counter -->
+            <div class="char-count">
+                <span id="char-count">0</span> characters
+            </div>
+
+            <!-- Helpful Note -->
+            <div class="privacy-note">
+
+                <span>✳</span>
+
+                <span>
+                    Include percentages and allergen statements if
+                    they're printed on the package.
+                </span>
+
+            </div>
+
+            <!-- Submit Button -->
+            <button
+                type="submit"
+                class="btn btn-primary btn-full"
+                id="manual-submit"
+            >
+                Analyze ingredients <span>→</span>
+            </button>
+
+            <!-- Loading Indicator -->
+            <div
+                class="loading-message"
+                id="manual-loading"
+                hidden
+            >
+                <span class="spinner"></span>
+                Preparing your ingredient insights…
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+
+{% endblock %}

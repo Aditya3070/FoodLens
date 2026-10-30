@@ -1,0 +1,19 @@
+# Environment variables and secrets
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+.venv/
+
+# IDE files
+.vscode/
+
+# Temporary files
+*.log
+
+# Uploaded user files (if applicable)
+uploads/

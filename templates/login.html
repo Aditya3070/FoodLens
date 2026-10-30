@@ -1,0 +1,98 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+    Log in — FoodLens
+{% endblock %}
+
+{% block content %}
+
+<section class="auth-layout">
+
+    <!-- Welcome Section -->
+    <div class="auth-aside">
+
+        <span class="eyebrow">WELCOME BACK</span>
+
+        <h1>
+            Your food.<br>
+            Your <em>knowledge.</em>
+        </h1>
+
+        <p>
+            Pick up where you left off and keep making informed choices,
+            one label at a time.
+        </p>
+
+        <div class="aside-quote">
+            “Clarity starts with knowing what is inside.”
+        </div>
+
+    </div>
+
+    <!-- Login Form -->
+    <div class="auth-card">
+
+        <span class="eyebrow">YOUR ACCOUNT</span>
+
+        <h2>Log in</h2>
+
+        <p class="muted">
+            Welcome back to FoodLens.
+        </p>
+
+        <form
+            method="POST"
+            action="{{ url_for('login') }}"
+            class="form-stack"
+        >
+
+            <!-- Email Address -->
+            <label>
+                Email address
+
+                <input
+                    type="email"
+                    name="email"
+                    required
+                    autocomplete="email"
+                    placeholder="you@example.com"
+                >
+            </label>
+
+            <!-- Password -->
+            <label>
+                Password
+
+                <input
+                    type="password"
+                    name="password"
+                    required
+                    autocomplete="current-password"
+                    placeholder="Enter your password"
+                >
+            </label>
+
+            <!-- Submit Button -->
+            <button
+                class="btn btn-primary btn-full"
+                type="submit"
+            >
+                Log in <span>→</span>
+            </button>
+
+        </form>
+
+        <!-- Registration Link -->
+        <p class="auth-switch">
+            New to FoodLens?
+            <a href="{{ url_for('register') }}">
+                Create an account
+            </a>
+        </p>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,182 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+    Dashboard — FoodLens
+{% endblock %}
+
+{% block content %}
+
+<section class="app-page">
+
+    <!-- Page Introduction -->
+    <div class="page-intro">
+
+        <div>
+            <span class="eyebrow">YOUR FOODLENS SPACE</span>
+
+            <h1>
+                Welcome back, {{ fullname.split(' ')[0] }}
+                <span class="wave"> ✦</span>
+            </h1>
+
+            <p>
+                Ready to discover what's inside your next product?
+            </p>
+        </div>
+
+        <a class="btn btn-primary" href="{{ url_for('upload') }}">
+            ＋ New scan
+        </a>
+
+    </div>
+
+    <!-- Dashboard Cards -->
+    <div class="dashboard-grid">
+
+        <!-- Total Scans -->
+        <article class="metric-card metric-main">
+
+            <div class="metric-icon">▣</div>
+
+            <span class="metric-label">
+                Total label scans
+            </span>
+
+            <strong>{{ total_scans }}</strong>
+
+            <p>
+                Your analyzed products, all in one place.
+            </p>
+
+        </article>
+
+        <!-- Image Analysis -->
+        <a class="action-card action-green"
+           href="{{ url_for('upload') }}">
+
+            <span class="action-icon">↥</span>
+
+            <span class="action-kicker">
+                IMAGE ANALYSIS
+            </span>
+
+            <h3>Scan a food label</h3>
+
+            <p>
+                Upload a photo and let OCR read the ingredients.
+            </p>
+
+            <span class="card-arrow">↗</span>
+
+        </a>
+
+        <!-- Manual Ingredient Entry -->
+        <a class="action-card action-cream"
+           href="{{ url_for('manual_entry') }}">
+
+            <span class="action-icon">✎</span>
+
+            <span class="action-kicker">
+                QUICK INPUT
+            </span>
+
+            <h3>Enter ingredients</h3>
+
+            <p>
+                Paste a list when you don't have a photo.
+            </p>
+
+            <span class="card-arrow">↗</span>
+
+        </a>
+
+    </div>
+
+    <!-- Recent Scans -->
+    <section class="panel recent-panel">
+
+        <div class="panel-heading">
+
+            <div>
+                <span class="eyebrow">YOUR ACTIVITY</span>
+                <h2>Recent scans</h2>
+            </div>
+
+            <a class="text-link" href="{{ url_for('history') }}">
+                View all ↗
+            </a>
+
+        </div>
+
+        {% if recent_scans %}
+
+            <div class="scan-table">
+
+                {% for scan in recent_scans %}
+
+                    <a class="scan-row"
+                       href="{{ url_for('scan_detail', scan_id=scan.id) }}">
+
+                        <span class="scan-thumb">✳</span>
+
+                        <span class="scan-product">
+
+                            <strong>
+                                {{ scan.product_name }}
+                            </strong>
+
+                            <small>
+                                {{ scan.created_at.strftime('%d %b %Y')
+                                   if scan.created_at
+                                   else 'Saved scan' }}
+                            </small>
+
+                        </span>
+
+                        <span class="verdict-chip verdict-{{ scan.verdict|lower|replace(' ', '-') }}">
+                            {{ scan.verdict }}
+                        </span>
+
+                        <span class="row-arrow">↗</span>
+
+                    </a>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <!-- Empty State -->
+            <div class="empty-state">
+
+                <span class="empty-icon">⌕</span>
+
+                <h3>Your first scan starts here</h3>
+
+                <p>
+                    Upload a food label to see ingredient insights
+                    and build your scan history.
+                </p>
+
+                <a class="btn btn-primary"
+                   href="{{ url_for('upload') }}">
+                    Scan first label ↗
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+    <!-- Disclaimer -->
+    <p class="disclaimer">
+        FoodLens provides AI-generated informational insights.
+        It does not replace professional medical or dietary advice.
+    </p>
+
+</section>
+
+{% endblock %}

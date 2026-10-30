@@ -1,0 +1,296 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+    Analysis results — FoodLens
+{% endblock %}
+
+{% block content %}
+
+<section class="app-page results-page">
+
+    <!-- Page Introduction -->
+    <div class="page-intro">
+        <div>
+            <span class="eyebrow">YOUR ANALYSIS REPORT</span>
+            <h1>Here's what's inside.</h1>
+            <p>
+                AI-assisted ingredient insights, organized to be easier
+                to understand.
+            </p>
+        </div>
+
+        <a class="back-link" href="{{ url_for('dashboard') }}">
+            ← Dashboard
+        </a>
+    </div>
+
+    <!-- Overall Result Summary -->
+    <section class="result-hero">
+        <div class="result-overview">
+            <span class="eyebrow">OVERALL SUMMARY</span>
+
+            <span class="verdict-chip verdict-{{ analysis.overall_verdict|default('review')|lower|replace(' ', '-') }}">
+                {{ analysis.overall_verdict|default('Review') }}
+            </span>
+
+            <h2>
+                {{ analysis.product_summary|default('Ingredient analysis complete') }}
+            </h2>
+
+            <p>
+                {{ analysis.summary|default('Review the ingredient details below. AI-generated findings may need to be checked against the original packaging.') }}
+            </p>
+
+            <div class="result-actions">
+                <a class="btn btn-primary" href="{{ url_for('upload') }}">
+                    Scan another label ↗
+                </a>
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    onclick="window.print()"
+                >
+                    Print report ⤓
+                </button>
+            </div>
+        </div>
+
+        <!-- Health Score -->
+        <div class="score-panel">
+            <span class="score-caption">HEALTH SCORE</span>
+
+            {% if analysis.score is not none and analysis.score is defined %}
+                <div
+                    class="score-circle"
+                    style="--score: {{ [[analysis.score|int, 100]|min, 0]|max }}"
+                >
+                    <div>
+                        <strong>{{ analysis.score }}</strong>
+                        <span>/ 100</span>
+                    </div>
+                </div>
+                <p>AI-generated estimate</p>
+            {% else %}
+                <div class="score-circle score-circle--unavailable">
+                    <div>
+                        <strong>—</strong>
+                        <span>/ 100</span>
+                    </div>
+                </div>
+                <p>Score unavailable</p>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Ingredient Breakdown -->
+    {% if analysis.ingredients %}
+
+        <section class="section-block">
+            <div class="section-title">
+                <div>
+                    <span class="eyebrow">INGREDIENT DETAILS</span>
+                    <h2>Ingredient breakdown</h2>
+                </div>
+
+                <span class="section-count">
+                    {{ analysis.ingredients|length }} items
+                </span>
+            </div>
+
+            <!-- Ingredient Classification Legend -->
+            <div class="ingredient-legend">
+                <span class="ingredient-status ingredient-status--good">
+                    GOOD
+                </span>
+                <span class="ingredient-status ingredient-status--limit">
+                    LIMIT
+                </span>
+                <span class="ingredient-status ingredient-status--check">
+                    CHECK
+                </span>
+                <span class="ingredient-status ingredient-status--neutral">
+                    NEUTRAL
+                </span>
+            </div>
+
+            <div class="ingredient-grid">
+                {% for ing in analysis.ingredients %}
+
+                    {% set status = ing.label|default('NEUTRAL')|upper %}
+
+                    <article class="ingredient-card">
+
+                        <div class="ingredient-card-top">
+
+                            <span class="ingredient-dot effect-{{ ing.effect|default('neutral')|lower }}"></span>
+
+                            <h3>
+                                {{ ing.name|default('Ingredient') }}
+                            </h3>
+
+                            <span class="category-tag">
+                                {{ ing.category|default('ingredient')|replace('_', ' ') }}
+                            </span>
+
+                            <!-- NEW: Ingredient Status Badge -->
+                            <span class="ingredient-status ingredient-status--{{ status|lower }}">
+                                {{ status }}
+                            </span>
+
+                        </div>
+
+                        <p>
+                            {{ ing.explanation|default('No detailed explanation was returned for this ingredient.') }}
+                        </p>
+
+                        {% if ing.body_systems_affected %}
+
+                            <div class="affected-tags">
+                                {% for sys in ing.body_systems_affected %}
+                                    <span>
+                                        {{ body_system_icons.get(sys, sys|replace('_', ' ')|title) }}
+                                    </span>
+                                {% endfor %}
+                            </div>
+
+                        {% endif %}
+
+                    </article>
+
+                {% endfor %}
+            </div>
+        </section>
+
+    {% else %}
+
+        <section class="section-block">
+            <div class="empty-state">
+                <h2>Ingredient breakdown unavailable</h2>
+                <p>
+                    The AI could not identify the ingredients reliably.
+                    Try another image or enter the ingredients manually.
+                </p>
+                <a class="btn btn-primary" href="{{ url_for('upload') }}">
+                    Try another label
+                </a>
+            </div>
+        </section>
+
+    {% endif %}
+
+    <!-- Body System Breakdown -->
+    {% if systems_breakdown %}
+
+        <section class="section-block">
+            <div class="section-title">
+                <div>
+                    <span class="eyebrow">AT A GLANCE</span>
+                    <h2>Grouped by body system</h2>
+                </div>
+            </div>
+
+            <div class="systems-grid">
+                {% for sys, ings in systems_breakdown.items() %}
+
+                    <article class="system-result-card">
+                        <h3>
+                            {{ body_system_icons.get(sys, sys|replace('_', ' ')|title) }}
+                        </h3>
+
+                        <div class="system-ingredient-list">
+                            {% for ing in ings %}
+                                <span>
+                                    <i class="ingredient-dot effect-{{ ing.effect|default('neutral')|lower }}"></i>
+                                    {{ ing.name }}
+                                </span>
+                            {% endfor %}
+                        </div>
+                    </article>
+
+                {% endfor %}
+            </div>
+        </section>
+
+    {% endif %}
+
+    <!-- Additional Insights -->
+    {% for key, title, icon in [
+        ('healthy_ingredients', 'Positive ingredients', '＋'),
+        ('ingredients_to_limit', 'Ingredients to be mindful of', '!'),
+        ('allergens', 'Allergen information', '◇'),
+        ('healthier_alternatives', 'Ideas to consider', '↗'),
+        ('recommendations', 'Recommendations', '✳')
+    ] %}
+
+        {% set items = analysis.get(key, []) %}
+
+        {% if items %}
+
+            <section class="insight-panel">
+                <div class="insight-icon">
+                    {{ icon }}
+                </div>
+
+                <div>
+                    <h2>{{ title }}</h2>
+
+                    {% if items is string %}
+                        <p>{{ items }}</p>
+                    {% else %}
+                        <ul>
+                            {% for item in items %}
+                                <li>
+                                    {% if item is mapping %}
+                                        <strong>
+                                            {{ item.name|default(item.title|default('')) }}
+                                        </strong>
+                                        {{ item.explanation|default(item.description|default(item.reason|default(''))) }}
+                                    {% else %}
+                                        {{ item }}
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </section>
+
+        {% endif %}
+
+    {% endfor %}
+
+    <!-- Original OCR Text -->
+    {% if extracted_text %}
+        <details class="raw-text">
+            <summary>
+                View original text extracted by OCR
+            </summary>
+            <pre>{{ extracted_text }}</pre>
+        </details>
+    {% endif %}
+
+    <!-- Disclaimer -->
+    <p class="disclaimer">
+        Important: this is an AI-generated educational estimate, not a
+        medical diagnosis or a validated nutrition score. OCR can misread
+        labels. Verify ingredients, percentages and allergen statements
+        against the original packaging. For dietary or medical concerns,
+        consult a qualified professional.
+    </p>
+
+    <!-- Bottom Navigation Actions -->
+    <div class="bottom-actions">
+        <a class="btn btn-secondary" href="{{ url_for('history') }}">
+            View scan history
+        </a>
+
+        <a class="btn btn-primary" href="{{ url_for('upload') }}">
+            Analyze another product ↗
+        </a>
+    </div>
+
+</section>
+
+{% endblock %}

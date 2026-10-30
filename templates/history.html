@@ -1,0 +1,119 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+    Scan history — FoodLens
+{% endblock %}
+
+{% block content %}
+
+<section class="app-page">
+
+    <!-- Page Introduction -->
+    <div class="page-intro">
+
+        <div>
+            <span class="eyebrow">YOUR PERSONAL LIBRARY</span>
+
+            <h1>Scan history</h1>
+
+            <p>
+                Revisit products you've analyzed and open their saved results.
+            </p>
+        </div>
+
+        <a class="btn btn-primary" href="{{ url_for('upload') }}">
+            ＋ New scan
+        </a>
+
+    </div>
+
+    {% if scans %}
+
+        <!-- History Table -->
+        <section class="panel history-panel">
+
+            <div class="history-header">
+                <span>PRODUCT</span>
+                <span>DATE</span>
+                <span>AI SUMMARY</span>
+                <span></span>
+            </div>
+
+            {% for scan in scans %}
+
+                <a class="history-row"
+                   href="{{ url_for('scan_detail', scan_id=scan.id) }}">
+
+                    <!-- Product Image and Name -->
+                    <span class="history-product">
+
+                        {% if scan.image_filename %}
+
+                            <img
+                                src="{{ url_for('static', filename='uploads/' ~ scan.image_filename) }}"
+                                alt=""
+                                class="history-thumb"
+                            >
+
+                        {% else %}
+
+                            <span class="history-thumb history-thumb-placeholder">
+                                ✎
+                            </span>
+
+                        {% endif %}
+
+                        <strong>{{ scan.product_name }}</strong>
+
+                    </span>
+
+                    <!-- Scan Date -->
+                    <span class="history-date">
+                        {{ scan.created_at.strftime('%d %b %Y')
+                           if scan.created_at
+                           else '—' }}
+                    </span>
+
+                    <!-- AI Verdict -->
+                    <span>
+                        <span class="verdict-chip verdict-{{ scan.verdict|lower|replace(' ', '-') }}">
+                            {{ scan.verdict }}
+                        </span>
+                    </span>
+
+                    <!-- Navigation Arrow -->
+                    <span class="row-arrow">↗</span>
+
+                </a>
+
+            {% endfor %}
+
+        </section>
+
+    {% else %}
+
+        <!-- Empty State -->
+        <div class="panel empty-state">
+
+            <span class="empty-icon">▤</span>
+
+            <h2>No scans saved yet</h2>
+
+            <p>
+                Your completed analyses will appear here so you can
+                revisit them later.
+            </p>
+
+            <a class="btn btn-primary"
+               href="{{ url_for('upload') }}">
+                Scan your first label ↗
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

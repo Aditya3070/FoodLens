@@ -1,0 +1,155 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+    Scan a label — FoodLens
+{% endblock %}
+
+{% block content %}
+
+<section class="app-page narrow-page">
+
+    <!-- Page Introduction -->
+    <div class="page-intro">
+
+        <div>
+            <span class="eyebrow">IMAGE-BASED ANALYSIS</span>
+
+            <h1>Let's read this label.</h1>
+
+            <p>
+                For best results, use a clear, well-lit photo of
+                the ingredients list.
+            </p>
+        </div>
+
+        <a class="back-link" href="{{ url_for('dashboard') }}">
+            ← Dashboard
+        </a>
+
+    </div>
+
+    <!-- Image Upload Panel -->
+    <div class="panel upload-panel">
+
+        <div class="panel-heading">
+
+            <div>
+                <span class="eyebrow">STEP 01 / UPLOAD</span>
+                <h2>Add your product</h2>
+            </div>
+
+            <span class="step-badge">JPG · PNG</span>
+
+        </div>
+
+        <!-- Upload Form -->
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+            action="{{ url_for('upload') }}"
+            id="upload-form"
+            class="form-stack"
+        >
+
+            <!-- Product Name -->
+            <label>
+                Product name
+                <span class="optional">(optional)</span>
+
+                <input
+                    type="text"
+                    name="product_name"
+                    maxlength="150"
+                    placeholder="e.g. Tomato pasta sauce"
+                >
+            </label>
+
+            <!-- Image Dropzone -->
+            <label class="dropzone" id="dropzone">
+
+                <input
+                    type="file"
+                    name="food_image"
+                    id="file-input"
+                    accept="image/png,image/jpeg,image/jpg"
+                    capture="environment"
+                    required
+                >
+
+                <span class="upload-symbol">↥</span>
+
+                <strong id="drop-title">
+                    Drop your label image here
+                </strong>
+
+                <span id="drop-hint">
+                    or click to browse your device
+                </span>
+
+                <span class="upload-types">
+                    PNG or JPG · Clear ingredient text works best
+                </span>
+
+                <!-- Selected Image Preview -->
+                <img
+                    id="preview"
+                    alt="Selected label preview"
+                    hidden
+                >
+
+            </label>
+
+            <!-- Upload Instructions -->
+            <div class="privacy-note">
+
+                <span>◎</span>
+
+                <span>
+                    <strong>Helpful tip</strong>
+                    Keep the full ingredients list inside the frame
+                    and avoid glare.
+                </span>
+
+            </div>
+
+            <!-- Submit Button -->
+            <button
+                type="submit"
+                class="btn btn-primary btn-full"
+                id="submit-btn"
+            >
+                Analyze this label <span>→</span>
+            </button>
+
+            <!-- Loading Indicator -->
+            <div
+                class="loading-message"
+                id="loading-message"
+                hidden
+            >
+                <span class="spinner"></span>
+                Reading your label and preparing insights…
+            </div>
+
+        </form>
+
+    </div>
+
+    <!-- Analysis Process Information -->
+    <div class="side-note">
+
+        <span>✳</span>
+
+        <p>
+            <strong>What happens next?</strong>
+            Tesseract OCR extracts the visible text. Groq AI then
+            organizes it into an ingredient summary, potential
+            concerns and practical context.
+        </p>
+
+    </div>
+
+</section>
+
+{% endblock %}
